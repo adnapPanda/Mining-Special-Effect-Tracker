@@ -99,7 +99,7 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 			incrementCelestialEffect(1);
 		}
 
-		if (message.equals("Your Mining cape allows you to mine an additional ore.")) {
+		if (message.equals("Your cape allows you to mine an additional ore.")) {
 			incrementOreEffect(1);
 			incrementOreMined(1);
 			incrementCapeEffect(1);
