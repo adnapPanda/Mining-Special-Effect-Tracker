@@ -25,6 +25,7 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 	int totalOreMined = 0, totalOreEffect = 0, smithingEffect = 0, totalSmithingEffect = 0;
 	int varrockArmourEffect, celestrialRingEffect, miningCapeEffect, miningGlovesEffect;
 	float miningDuration = 0;
+	boolean inMlm = false;
 
 	public static final Set<Integer> MINING_ANIMATION_IDS = ImmutableSet.of(
 			MINING_BRONZE_PICKAXE, MINING_IRON_PICKAXE, MINING_STEEL_PICKAXE, MINING_BLACK_PICKAXE,
@@ -40,6 +41,8 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 			MINING_MOTHERLODE_INFERNAL, MINING_MOTHERLODE_3A, MINING_MOTHERLODE_CRYSTAL,
 			MINING_MOTHERLODE_TRAILBLAZER
 	);
+
+	private static final Set<Integer> MOTHERLODE_MAP_REGIONS = ImmutableSet.of(14679, 14680, 14681, 14935, 14936, 14937, 15191, 15192, 15193);
 
 	@Inject
 	private Client client;
@@ -57,6 +60,7 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		overlayManager.add(overlay);
+		inMlm = checkInMlm();
 	}
 
 	@Override
@@ -72,7 +76,37 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 	}
 
 	@Subscribe
+	public void onGameStateChanged(GameStateChanged event)
+	{
+		if (event.getGameState() == GameState.LOADING)	inMlm = checkInMlm();
+	}
+
+	private boolean checkInMlm() {
+		GameState gameState = client.getGameState();
+		if (gameState != GameState.LOGGED_IN && gameState != GameState.LOADING)
+		{
+			return false;
+		}
+
+		int[] currentMapRegions = client.getMapRegions();
+
+		// Verify that all regions exist in MOTHERLODE_MAP_REGIONS
+		for (int region : currentMapRegions)
+		{
+			if (!MOTHERLODE_MAP_REGIONS.contains(region))
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	@Subscribe
 	public void onGameTick(GameTick event) {
+		if (inMlm) {
+			return;
+		}
 		if (miningDuration > 0) {
 			miningDuration -= 0.6;
 		}
@@ -81,6 +115,9 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
+		if (inMlm) { //if in mlm return since mining effects dont work in mlm
+			return;
+		}
 		if (event.getType() != ChatMessageType.SPAM) {
 			return;
 		}
@@ -115,6 +152,7 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 		}
 
 		if (message.matches("You manage to mine some(.*)")) {
+			miningDuration = 300; //reset overlay to 5 minutes
 			incrementOreMined(1);
 		}
 	}
