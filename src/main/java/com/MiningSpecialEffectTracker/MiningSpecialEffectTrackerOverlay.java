@@ -72,7 +72,7 @@ class MiningSpecialEffectTrackerOverlay extends OverlayPanel {
 
                 if (config.showSmithingEffect())
                     elems.add(LineComponent.builder()
-                            .left("Smithing:")
+                            .left("Smelting:")
                             .right(String.format("%d", plugin.smithingEffect))
                             .build());
 
