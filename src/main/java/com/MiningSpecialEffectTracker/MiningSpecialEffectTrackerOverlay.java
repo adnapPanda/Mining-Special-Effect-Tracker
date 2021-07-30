@@ -72,31 +72,31 @@ class MiningSpecialEffectTrackerOverlay extends OverlayPanel {
 
                 if (config.showSmithingEffect())
                     elems.add(LineComponent.builder()
-                            .left("Smithing Effect:")
+                            .left("Smelting:")
                             .right(String.format("%d", plugin.smithingEffect))
                             .build());
 
                 if (config.showVarrockEffect())
                     elems.add(LineComponent.builder()
-                            .left("Varrock Armour Effect:")
+                            .left("Varrock Armour:")
                             .right(String.format("%d", plugin.varrockArmourEffect))
                             .build());
 
                 if (config.showCelestialEffect())
                     elems.add(LineComponent.builder()
-                            .left("Celestial Ring Effect:")
+                            .left("Celestial Ring:")
                             .right(String.format("%d", plugin.celestrialRingEffect))
                             .build());
 
                 if (config.showCapeEffect())
                     elems.add(LineComponent.builder()
-                            .left("Mining Cape Effect:")
+                            .left("Mining Cape:")
                             .right(String.format("%d", plugin.miningCapeEffect))
                             .build());
 
                 if (config.showGlovesEffect())
                     panelComponent.getChildren().add(LineComponent.builder()
-                            .left("Mining Gloves Effect:")
+                            .left("Mining Gloves:")
                             .right(String.format("%d", plugin.miningGlovesEffect))
                             .build());
             }
