@@ -122,36 +122,36 @@ public class MiningSpecialEffectTrackerPlugin extends Plugin
 			return;
 		}
 
-		String message = event.getMessage();
+		String message = event.getMessage().toLowerCase();
 
-		if (message.equals("The Varrock platebody enabled you to mine an additional ore.")) {
+		if (message.equals("the varrock platebody enabled you to mine an additional ore.")) {
 			incrementOreEffect(1);
 			incrementOreMined(1);
 			incrementVarrockEffect(1);
 		}
 
-		if (message.equals("Your Celestial ring allows you to mine an additional ore.")) {
+		if (message.equals("your celestial ring allows you to mine an additional ore.")) {
 			incrementOreEffect(1);
 			incrementOreMined(1);
 			incrementCelestialEffect(1);
 		}
 
-		if (message.equals("Your cape allows you to mine an additional ore.")) {
+		if (message.equals("your cape allows you to mine an additional ore.")) {
 			incrementOreEffect(1);
 			incrementOreMined(1);
 			incrementCapeEffect(1);
 		}
 
-		if (message.equals("The Varrock platebody enabled you to smelt your next ore simultaneously.")) {
+		if (message.equals("the varrock platebody enabled you to smelt your next ore simultaneously.")) {
 			incrementSmithingEffect(1);
 		}
 
-		if (message.equals("Your Mining gloves prevent the rock from depleting.")) {
+		if (message.matches("your(?: \\w+) mining gloves(.*)")) {
 			incrementOreEffect(1);
 			incrementGlovesEffect(1);
 		}
 
-		if (message.matches("You manage to mine some(.*)")) {
+		if (message.matches("you manage to mine some(.*)")) {
 			miningDuration = 300; //reset overlay to 5 minutes
 			incrementOreMined(1);
 		}
